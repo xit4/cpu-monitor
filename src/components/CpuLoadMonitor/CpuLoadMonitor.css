@@ -1,0 +1,7 @@
+.Box {
+  border-radius: 8px;
+  background-color: #1a282e;
+  padding: 24px 0;
+  width: 100%;
+  max-width: 1000px;
+}

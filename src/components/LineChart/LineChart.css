@@ -1,0 +1,20 @@
+.LineChart {
+  font-size: 1.5em;
+  color: #666;
+}
+
+.LineChart svg {
+  background: linear-gradient(0deg, #0d1518 0%, #1a282e 80%);
+}
+
+.LineChart circle {
+  transition: strokeWidth ease-in-out 0.4s, r ease-in-out 0.4s;
+}
+
+.LineChart .tooltip {
+  opacity: 0;
+}
+.LineChart .tooltip.active {
+  opacity: 1;
+  transition: opacity ease-in 0.2s;
+}
