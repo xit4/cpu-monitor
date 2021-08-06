@@ -64,14 +64,6 @@ export const LineChart = ({ data }: LineChartProps) => {
             <stop offset="100%" stop-color="red" />
           </linearGradient>
         </defs>
-        <text
-          fill="#fff"
-          x={width / 2}
-          y={getY(1) - 15}
-          textAnchor="middle"
-        >
-          High average load threshold
-        </text>
         <line
           stroke-dasharray="5, 10"
           x1={margin.left}
@@ -80,6 +72,14 @@ export const LineChart = ({ data }: LineChartProps) => {
           y2={getY(1)}
           stroke="red"
         ></line>
+        <text
+          className="LineChart-threshold-label"
+          fill="currentColor"
+          x={margin.left}
+          y={getY(1) - 2}
+        >
+          High average load threshold
+        </text>
         <path
           strokeWidth={3}
           fill="none"
@@ -89,23 +89,23 @@ export const LineChart = ({ data }: LineChartProps) => {
         {data.map((item, idx) => {
           return (
             <g key={item.timestamp}>
-              <text
-                className={`tooltip ${idx === activeIndex ? "active" : ""}`}
-                fill="#fff"
-                x={getX(item.timestamp)}
-                y={getY(item.loadAvg) - 15}
-                textAnchor="middle"
-              >
-                {item.loadAvg.toFixed(2)}
-              </text>
               <circle
                 cx={getX(item.timestamp)}
                 cy={getY(item.loadAvg)}
                 r={idx === activeIndex ? 6 : 4}
                 fill="url(#heatGradient)"
                 strokeWidth={idx === activeIndex ? 2 : 0}
-                stroke="#fff"
+                stroke="currentColor"
               />
+              <text
+                className={`tooltip ${idx === activeIndex ? "active" : ""}`}
+                fill="currentColor"
+                x={getX(item.timestamp)}
+                y={getY(item.loadAvg) - 15}
+                textAnchor="middle"
+              >
+                {item.loadAvg.toFixed(2)}
+              </text>
             </g>
           );
         })}

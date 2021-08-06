@@ -1,7 +1,50 @@
-.Box {
+.CpuLoadMonitor {
+  box-sizing: border-box;
   border-radius: 8px;
   background-color: #1a282e;
-  padding: 24px 0;
   width: 100%;
   max-width: 1000px;
+  padding: 16px;
+  color: #eeeeee;
+}
+
+.CpuLoadMonitor-header {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.CpuLoadMonitor-info {
+  display: flex;
+  align-items: center;
+  margin-right: 32px;
+  margin-bottom: 16px;
+}
+
+.CpuLoadMonitor-info-img {
+  height: 48px;
+  margin-right: 16px;
+}
+
+.CpuLoadMonitor-info-content {
+  display: flex;
+  flex-direction: column;
+  height: 72px;
+}
+
+.CpuLoadMonitor-load {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.CpuLoadMonitor-load-value {
+  font-size: 2em;
+}
+
+.CpuLoadMonitor-load-label {
+  font-size: 0.8em;
+}
+
+.CpuLoadMonitor-time {
+  font-size: 0.8em;
 }
