@@ -66,7 +66,7 @@ export const CpuLoadMonitor = () => {
                 {loads[loads.length - 1].loadAvg.toFixed(2)}
               </span>
               <span className="CpuLoadMonitor-load-label">
-                Alert(s) of high load
+                High load alert(s)
               </span>
             </div>
             <span className="CpuLoadMonitor-time">
@@ -84,7 +84,7 @@ export const CpuLoadMonitor = () => {
                 {loads[loads.length - 1].loadAvg.toFixed(2)}
               </span>
               <span className="CpuLoadMonitor-load-label">
-                Alert(s) of recovered load
+                Recovery alert(s)
               </span>
             </div>
             <span className="CpuLoadMonitor-time">

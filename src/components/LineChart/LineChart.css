@@ -1,11 +1,12 @@
 .LineChart {
-  font-size: 1.5em;
+  font-size: 1.5rem;
   color: #eee;
 }
 
 .LineChart svg {
   background: linear-gradient(0deg, #0d1518 0%, #1a282e 80%);
   border-radius: 8px;
+  display: block;
 }
 
 .LineChart circle {
@@ -22,6 +23,6 @@
 }
 
 .LineChart-threshold-label {
-  font-size: 0.5em;
-  color: red;
+  font-size: 0.8rem;
+  color: #da3838;
 }

@@ -2,7 +2,7 @@
   background-color: #d8d8d8;
   border-radius: 8px;
   position: relative;
-  height: 8px;
+  height: 10px;
   width: 100%;
   overflow-y: hidden;
 }
@@ -21,8 +21,8 @@
 }
 
 .Countdown-heavy {
-  background: linear-gradient(to left, #f2709c, #ff9472);
-  box-shadow: 0 0 10px 5px #f2709c;
+  background: linear-gradient(to left, #da3838, #ff9472);
+  box-shadow: 0 0 10px 5px #da3838;
 }
 
 @keyframes progress {

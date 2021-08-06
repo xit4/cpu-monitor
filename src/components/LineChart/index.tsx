@@ -59,9 +59,9 @@ export const LineChart = ({ data }: LineChartProps) => {
             x2="0%"
             y2={getY(1)}
           >
-            <stop offset="0%" stop-color="green" />
-            <stop offset="90%" stop-color="yellow" />
-            <stop offset="100%" stop-color="red" />
+            <stop offset="50%" stop-color="#0368ac" />
+            <stop offset="90%" stop-color="#ffe07d" />
+            <stop offset="100%" stop-color="#da3838" />
           </linearGradient>
         </defs>
         <line
@@ -70,7 +70,7 @@ export const LineChart = ({ data }: LineChartProps) => {
           y1={getY(1)}
           x2={width - margin.right}
           y2={getY(1)}
-          stroke="red"
+          stroke="#da3838"
         ></line>
         <text
           className="LineChart-threshold-label"
