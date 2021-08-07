@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { LOAD_THRESHOLD } from "../../constants";
 import "./Countdown.css";
 
 type CountdownProps = {
@@ -19,7 +20,7 @@ export const Countdown = ({ duration, currentLoad }: CountdownProps) => {
       {showBar && (
         <div
           className={`Countdown-done ${
-            currentLoad >= 1 ? "Countdown-heavy" : ""
+            currentLoad >= LOAD_THRESHOLD ? "Countdown-heavy" : ""
           }`}
           style={{
             animationDuration: `${duration + 0.5}s`,

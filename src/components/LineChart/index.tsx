@@ -1,5 +1,6 @@
 import * as d3 from "d3";
 import { MouseEventHandler, useState } from "react";
+import { LOAD_THRESHOLD } from "../../constants";
 import { CpuLoadAvg } from "../../types";
 import "./LineChart.css";
 
@@ -23,7 +24,7 @@ export const LineChart = ({ data }: LineChartProps) => {
 
   const getY = d3
     .scaleLinear()
-    .domain([0, Math.max(1.5, yMaxValue + 0.4)])
+    .domain([0, Math.max(LOAD_THRESHOLD + 0.4, yMaxValue + 0.4)])
     .range([height - margin.top, 0]);
 
   const linePath = d3
@@ -57,7 +58,7 @@ export const LineChart = ({ data }: LineChartProps) => {
             x1="0%"
             y1={getY(0)}
             x2="0%"
-            y2={getY(1)}
+            y2={getY(LOAD_THRESHOLD)}
           >
             <stop offset="50%" stop-color="#0368ac" />
             <stop offset="90%" stop-color="#ffe07d" />
@@ -67,16 +68,16 @@ export const LineChart = ({ data }: LineChartProps) => {
         <line
           stroke-dasharray="5, 10"
           x1={margin.left}
-          y1={getY(1)}
+          y1={getY(LOAD_THRESHOLD)}
           x2={width - margin.right}
-          y2={getY(1)}
+          y2={getY(LOAD_THRESHOLD)}
           stroke="#da3838"
         ></line>
         <text
           className="LineChart-threshold-label"
           fill="currentColor"
           x={margin.left}
-          y={getY(1) - 2}
+          y={getY(LOAD_THRESHOLD) - 2}
         >
           High average load threshold
         </text>
@@ -115,18 +116,21 @@ export const LineChart = ({ data }: LineChartProps) => {
             {item.loadAvg.toFixed(2)}
           </text>
         ))}
-        {data.map((item, idx) => (
-          <text
-            key={item.timestamp}
-            className={`tooltipTime ${idx === activeIndex ? "active" : ""}`}
-            fill="currentColor"
-            x={getX(item.timestamp)}
-            y={getY(item.loadAvg) - 35}
-            textAnchor="middle"
-          >
-            {new Date(item.timestamp).toLocaleTimeString()}
-          </text>
-        ))}
+        {data.map(
+          (item, idx) =>
+            !!item.loadAvg && (
+              <text
+                key={item.timestamp}
+                className={`tooltipTime ${idx === activeIndex ? "active" : ""}`}
+                fill="currentColor"
+                x={getX(item.timestamp)}
+                y={getY(item.loadAvg) - 35}
+                textAnchor="middle"
+              >
+                {new Date(item.timestamp).toLocaleTimeString().split(" ")[0]}
+              </text>
+            )
+        )}
       </svg>
     </div>
   );

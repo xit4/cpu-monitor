@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { LineChart } from "../LineChart";
-import { LOAD_HISTORY_TIME_LIMIT } from "../../constants";
+import { LOAD_HISTORY_TIME_LIMIT, LOAD_THRESHOLD } from "../../constants";
 import { Alert, CpuLoadAvg } from "../../types";
 import { CpuPolling, Alerts } from "../../observables";
 import "./CpuLoadMonitor.css";
@@ -51,7 +51,8 @@ export const CpuLoadMonitor = () => {
       alertsUnsubscribe();
     };
   }, [historySize]);
-
+  const currentLoad = loads[loads.length - 1];
+  const isCurrentLoadAboveThreshold = currentLoad.loadAvg >= LOAD_THRESHOLD;
   return (
     <div className="CpuLoadMonitor">
       <h2>CPU Average Load</h2>
@@ -60,17 +61,18 @@ export const CpuLoadMonitor = () => {
           <img src={cpu} className="CpuLoadMonitor-info-img" alt="CPU" />
           <div className="CpuLoadMonitor-info-content">
             <div className="CpuLoadMonitor-load">
-              <span className="CpuLoadMonitor-load-value">
-                {loads[loads.length - 1].loadAvg.toFixed(2)}
+              <span
+                className={`CpuLoadMonitor-load-value ${
+                  isCurrentLoadAboveThreshold ? "high" : ""
+                }`}
+              >
+                {currentLoad.loadAvg.toFixed(2)}
               </span>
               <span className="CpuLoadMonitor-load-label">
                 Last measured average load
               </span>
             </div>
-            <Countdown
-              duration={10}
-              currentLoad={loads[loads.length - 1].loadAvg}
-            />
+            <Countdown duration={10} currentLoad={currentLoad.loadAvg} />
           </div>
         </div>
         {!!highLoadAlerts.length && (
