@@ -2,11 +2,12 @@ import * as d3 from "d3";
 import { MouseEventHandler, useState } from "react";
 import { LOAD_THRESHOLD } from "../../constants";
 import { CpuLoadAvg } from "../../types";
+import { cn, toTimeString } from "../../utils";
 import "./LineChart.css";
 
-const margin = { top: 8, right: 24, bottom: 48, left: 24 },
-  width = 800,
-  height = 400;
+const MARGIN = { top: 8, right: 24, bottom: 48, left: 24 },
+  WIDTH = 800,
+  HEIGHT = 400;
 
 type LineChartProps = {
   data: CpuLoadAvg[];
@@ -15,23 +16,23 @@ type LineChartProps = {
 export const LineChart = ({ data }: LineChartProps) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-  const yMaxValue = d3.max(data, (d) => d.loadAvg) ?? 1;
+  const yMaxValue = d3.max(data, (d) => d.loadAvg) ?? LOAD_THRESHOLD;
 
   const getX = d3
     .scaleTime()
     .domain(d3.extent(data, (d) => d.timestamp) as [number, number])
-    .range([margin.left, width - margin.right]);
+    .range([MARGIN.left, WIDTH - MARGIN.right]);
 
   const getY = d3
     .scaleLinear()
-    .domain([0, Math.max(LOAD_THRESHOLD + 0.4, yMaxValue + 0.4)])
-    .range([height - margin.top, 0]);
+    .domain([0, Math.max(yMaxValue + 0.4)])
+    .range([HEIGHT - MARGIN.top, 0]);
 
   const linePath = d3
-    .line()
-    .x((d: any) => getX(d.timestamp))
-    .y((d: any) => getY(d.loadAvg))
-    .curve(d3.curveMonotoneX)(data as any);
+    .line<CpuLoadAvg>()
+    .x((d) => getX(d.timestamp))
+    .y((d) => getY(d.loadAvg))
+    .curve(d3.curveMonotoneX)(data);
 
   const handleMouseMove: MouseEventHandler<SVGElement> = (e) => {
     const bisect = d3.bisector((d: CpuLoadAvg) => d.timestamp).center,
@@ -47,7 +48,7 @@ export const LineChart = ({ data }: LineChartProps) => {
   return (
     <div className="LineChart">
       <svg
-        viewBox={`0 0 ${width} ${height}`}
+        viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
       >
@@ -67,16 +68,16 @@ export const LineChart = ({ data }: LineChartProps) => {
         </defs>
         <line
           stroke-dasharray="5, 10"
-          x1={margin.left}
+          x1={MARGIN.left}
           y1={getY(LOAD_THRESHOLD)}
-          x2={width - margin.right}
+          x2={WIDTH - MARGIN.right}
           y2={getY(LOAD_THRESHOLD)}
           stroke="#da3838"
         ></line>
         <text
           className="LineChart-threshold-label"
           fill="currentColor"
-          x={margin.left}
+          x={MARGIN.left}
           y={getY(LOAD_THRESHOLD) - 2}
         >
           High average load threshold
@@ -107,7 +108,9 @@ export const LineChart = ({ data }: LineChartProps) => {
         {data.map((item, idx) => (
           <text
             key={item.timestamp}
-            className={`tooltip ${idx === activeIndex ? "active" : ""}`}
+            className={cn("LineChart-tooltip", {
+              "LineChart-tooltip-active": idx === activeIndex,
+            })}
             fill="currentColor"
             x={getX(item.timestamp)}
             y={getY(item.loadAvg) - 15}
@@ -121,13 +124,15 @@ export const LineChart = ({ data }: LineChartProps) => {
             !!item.loadAvg && (
               <text
                 key={item.timestamp}
-                className={`tooltipTime ${idx === activeIndex ? "active" : ""}`}
+                className={cn("LineChart-tooltip-time", {
+                  "LineChart-tooltip-active": idx === activeIndex,
+                })}
                 fill="currentColor"
                 x={getX(item.timestamp)}
                 y={getY(item.loadAvg) - 35}
                 textAnchor="middle"
               >
-                {new Date(item.timestamp).toLocaleTimeString().split(" ")[0]}
+                {toTimeString(item.timestamp)}
               </text>
             )
         )}

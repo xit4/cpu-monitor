@@ -13,43 +13,6 @@
   flex-wrap: wrap;
 }
 
-.CpuLoadMonitor-info {
-  display: flex;
-  align-items: center;
-  margin-right: 32px;
-  margin-bottom: 16px;
-}
-
-.CpuLoadMonitor-info-img {
-  height: 48px;
-  margin-right: 16px;
-}
-
-.CpuLoadMonitor-info-content {
-  display: flex;
-  flex-direction: column;
-}
-
-.CpuLoadMonitor-load {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  margin-bottom: 8px;
-}
-
-.CpuLoadMonitor-load-value {
-  font-size: 2rem;
-  font-weight: bold;
-}
-
-.CpuLoadMonitor-load-value.high {
-  color: #da3838;
-}
-
-.CpuLoadMonitor-load-label {
-  font-size: 0.8rem;
-}
-
 .CpuLoadMonitor-time {
   font-size: 0.8rem;
   line-height: 0.7rem;

@@ -4,7 +4,8 @@ import { Alert, AlertType } from "../types";
 
 export class Alerts implements Observable<Alert> {
   private observers: Array<(alert: Alert) => void> = [];
-  private submitted: boolean = false;
+  private dispatched: boolean = false;
+  private firstHighAlertDispathed: boolean = false;
   private lastAlert?: Alert;
 
   constructor(private timeLimit: number = TIME_LIMIT) {}
@@ -23,20 +24,25 @@ export class Alerts implements Observable<Alert> {
       this.replaceLastAlert(cpuLoadAvgType, cpuLoadAvg.timestamp);
     } else if (this.lastAlert && this.lastAlert.type !== cpuLoadAvgType) {
       // if we are already tracking and the load type changed
-      this.replaceLastAlert(cpuLoadAvgType, cpuLoadAvg.timestamp);
-      this.submitted = false;
+      if (cpuLoadAvgType === "Low" && !this.firstHighAlertDispathed) {
+        this.dispatched = true;
+      } else {
+        this.replaceLastAlert(cpuLoadAvgType, cpuLoadAvg.timestamp);
+        this.dispatched = false;
+      }
     } else if (
       this.lastAlert &&
       this.lastAlert.type === cpuLoadAvgType &&
-      !this.submitted
+      !this.dispatched
     ) {
       // if we are already tracking and the load type did not change
       const isOverTimeLimit =
         cpuLoadAvg.timestamp - this.lastAlert.timestamp >= this.timeLimit;
       if (isOverTimeLimit) {
         this.replaceLastAlert(cpuLoadAvgType, cpuLoadAvg.timestamp);
-        this.submitted = true;
+        this.dispatched = true;
         this.observers.forEach((observer) => observer(this.lastAlert!));
+        this.firstHighAlertDispathed = true;
       }
     }
   }

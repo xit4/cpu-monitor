@@ -1,0 +1,30 @@
+.Info {
+  display: flex;
+  align-items: center;
+  margin-right: 32px;
+  margin-bottom: 16px;
+}
+
+.Info-img {
+  height: 48px;
+  margin-right: 16px;
+}
+
+.Info-value {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.Info-value-highlight {
+  color: #da3838;
+}
+
+.Info-label {
+  font-size: 0.8rem;
+  margin-bottom: 8px;
+}
+
+.Info-content {
+  display: flex;
+  flex-direction: column;
+}

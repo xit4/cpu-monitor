@@ -1,1 +1,0 @@
-I was lazy and assumed you would test this on a linux/macos machine so I did not check if the backend works on windows machine. If it does not, there probably is some polyfil for `os` that works
