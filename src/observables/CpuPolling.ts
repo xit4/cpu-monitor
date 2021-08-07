@@ -9,15 +9,6 @@ export class CpuPolling implements Observable<CpuLoadAvg> {
 
   constructor(private pollingRate: number = REFRESH_RATE) {}
 
-  set refreshRate(rate: number) {
-    this.pollingRate = rate;
-
-    if (this.timeout !== undefined) {
-      // reset timeout by refetching
-      this.updateCpuLoadAvg();
-    }
-  }
-
   get refreshRate(): number {
     return this.pollingRate;
   }

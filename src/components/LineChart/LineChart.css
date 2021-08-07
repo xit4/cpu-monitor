@@ -13,11 +13,18 @@
   transition: strokeWidth ease-in-out 0.4s, r ease-in-out 0.4s;
 }
 
-.LineChart .tooltip {
+.LineChart .tooltip,
+.LineChart .tooltipTime {
   filter: drop-shadow(0px 0px 1px #eee);
   opacity: 0;
 }
-.LineChart .tooltip.active {
+
+.LineChart .tooltipTime {
+  font-size: 0.7rem;
+}
+
+.LineChart .tooltip.active,
+.LineChart .tooltipTime.active {
   opacity: 1;
   transition: opacity ease-in 0.2s;
 }

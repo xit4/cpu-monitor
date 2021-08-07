@@ -23,7 +23,7 @@ export const LineChart = ({ data }: LineChartProps) => {
 
   const getY = d3
     .scaleLinear()
-    .domain([0, Math.max(1.5, yMaxValue + 0.25)])
+    .domain([0, Math.max(1.5, yMaxValue + 0.4)])
     .range([height - margin.top, 0]);
 
   const linePath = d3
@@ -86,29 +86,47 @@ export const LineChart = ({ data }: LineChartProps) => {
           stroke={"url(#heatGradient)"}
           d={linePath ?? ""}
         />
-        {data.map((item, idx) => {
-          return (
-            <g key={item.timestamp}>
-              <circle
-                cx={getX(item.timestamp)}
-                cy={getY(item.loadAvg)}
-                r={idx === activeIndex ? 6 : 4}
-                fill="url(#heatGradient)"
-                strokeWidth={idx === activeIndex ? 2 : 0}
-                stroke="currentColor"
-              />
-              <text
-                className={`tooltip ${idx === activeIndex ? "active" : ""}`}
-                fill="currentColor"
-                x={getX(item.timestamp)}
-                y={getY(item.loadAvg) - 15}
-                textAnchor="middle"
-              >
-                {item.loadAvg.toFixed(2)}
-              </text>
-            </g>
-          );
-        })}
+        {/*
+         * the following cycles are repetead three times so that the
+         * last SVG will not be rendered on top of the previous ones in
+         * ascending curves.
+         * AKA text shows on top of circles when the curve is going up
+         */}
+        {data.map((item, idx) => (
+          <circle
+            key={item.timestamp}
+            cx={getX(item.timestamp)}
+            cy={getY(item.loadAvg)}
+            r={idx === activeIndex ? 6 : 4}
+            fill="url(#heatGradient)"
+            strokeWidth={idx === activeIndex ? 2 : 0}
+            stroke="currentColor"
+          />
+        ))}
+        {data.map((item, idx) => (
+          <text
+            key={item.timestamp}
+            className={`tooltip ${idx === activeIndex ? "active" : ""}`}
+            fill="currentColor"
+            x={getX(item.timestamp)}
+            y={getY(item.loadAvg) - 15}
+            textAnchor="middle"
+          >
+            {item.loadAvg.toFixed(2)}
+          </text>
+        ))}
+        {data.map((item, idx) => (
+          <text
+            key={item.timestamp}
+            className={`tooltipTime ${idx === activeIndex ? "active" : ""}`}
+            fill="currentColor"
+            x={getX(item.timestamp)}
+            y={getY(item.loadAvg) - 35}
+            textAnchor="middle"
+          >
+            {new Date(item.timestamp).toLocaleTimeString()}
+          </text>
+        ))}
       </svg>
     </div>
   );

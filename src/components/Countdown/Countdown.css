@@ -4,12 +4,13 @@
   position: relative;
   height: 10px;
   width: 100%;
-  overflow-y: hidden;
 }
 
 .Countdown-done {
-  background: linear-gradient(to left, #0368ac, #2f7db1);
-  box-shadow: 0 0 10px 5px #0368ac;
+  background: linear-gradient(to left, #0368ac, #377eae);
+  box-shadow: 0 0 5px 0 #0368ac;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
   color: #fff;
   display: flex;
   align-items: center;
@@ -22,14 +23,21 @@
 
 .Countdown-heavy {
   background: linear-gradient(to left, #da3838, #ff9472);
-  box-shadow: 0 0 10px 5px #da3838;
+  box-shadow: 0 0 5px 0 #da3838;
 }
 
 @keyframes progress {
-  from {
+  0% {
     width: 100%;
+    transform: scaleY(1);
   }
-  to {
+  88% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+  100% {
     width: 0%;
+    transform: scaleY(0);
+    opacity: 0.5;
   }
 }
