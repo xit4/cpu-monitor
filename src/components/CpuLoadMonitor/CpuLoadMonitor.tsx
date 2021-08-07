@@ -13,8 +13,8 @@ import flames from "../../assets/flames.png";
 import good from "../../assets/good.png";
 import { Countdown } from "..";
 import { initializeHistory } from "./initializeHistory";
-import { toTimeString } from "../../utils";
 import { Info } from "../Info/Info";
+import { AlertsCounter } from "./AlertsCounter";
 
 const cpuPolling = new CpuPolling();
 const alerts = new Alerts();
@@ -73,34 +73,18 @@ export const CpuLoadMonitor = () => {
             currentLoad={currentLoad.loadAvg}
           />
         </Info>
-        {!!highLoadAlerts.length && (
-          <Info
-            value={highLoadAlerts.length}
-            label="High load alert(s)"
-            imageSrc={flames}
-            imageAlt="flame"
-          >
-            <span className="CpuLoadMonitor-time">
-              {`Last at ${new Date(
-                highLoadAlerts[highLoadAlerts.length - 1].timestamp
-              ).toLocaleTimeString()}`}
-            </span>
-          </Info>
-        )}
-        {!!lowLoadAlerts.length && (
-          <Info
-            value={lowLoadAlerts.length}
-            label="Recovery alert(s)"
-            imageSrc={good}
-            imageAlt="happy face over red, yellow, green speedometer pointing green"
-          >
-            <span className="CpuLoadMonitor-time">
-              {`Last at ${toTimeString(
-                lowLoadAlerts[lowLoadAlerts.length - 1].timestamp
-              )}`}
-            </span>
-          </Info>
-        )}
+        <AlertsCounter
+          loadAlerts={highLoadAlerts}
+          label="High load alert(s)"
+          imageSrc={flames}
+          imageAlt="flame"
+        />
+        <AlertsCounter
+          loadAlerts={lowLoadAlerts}
+          label="Recovery alert(s)"
+          imageSrc={good}
+          imageAlt="happy face over red, yellow, green speedometer pointing green"
+        />
       </div>
       <LineChart data={loads} />
     </div>
