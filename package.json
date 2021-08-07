@@ -26,7 +26,8 @@
     "start": "concurrently 'node ./backend' 'react-scripts start'",
     "build": "react-scripts build",
     "test:backend": "jest ./backend/*.spec.js",
-    "test": "react-scripts test",
+    "test:ui": "react-scripts test",
+    "test": "yarn test:backend && yarn test:ui",
     "eject": "react-scripts eject",
     "serve": "yarn build && node ./backend"
   },
@@ -46,6 +47,11 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
+    ]
+  },
+  "jest": {
+    "transformIgnorePatterns": [
+      "node_modules/(?!d3)/"
     ]
   },
   "proxy": "http://localhost:4242"

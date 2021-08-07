@@ -61,13 +61,13 @@ export const LineChart = ({ data }: LineChartProps) => {
             x2="0%"
             y2={getY(LOAD_THRESHOLD)}
           >
-            <stop offset="50%" stop-color="#0368ac" />
-            <stop offset="90%" stop-color="#ffe07d" />
-            <stop offset="100%" stop-color="#da3838" />
+            <stop offset="50%" stopColor="#0368ac" />
+            <stop offset="90%" stopColor="#ffe07d" />
+            <stop offset="100%" stopColor="#da3838" />
           </linearGradient>
         </defs>
         <line
-          stroke-dasharray="5, 10"
+          strokeDasharray="5, 10"
           x1={MARGIN.left}
           y1={getY(LOAD_THRESHOLD)}
           x2={WIDTH - MARGIN.right}
