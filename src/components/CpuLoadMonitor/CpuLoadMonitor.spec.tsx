@@ -80,6 +80,6 @@ describe("CpuLoadMonitor", () => {
     expect(screen.getAllByText(/high load alert/i)).toBeDefined();
     expect(screen.getAllByText(/recovery/i)).toBeDefined();
     expect(screen.getAllByText("2")).toBeDefined();
-    expect(screen.getAllByText("1")).toBeDefined();
+    expect(screen.getByText("1")).toBeDefined();
   });
 });

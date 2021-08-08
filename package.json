@@ -26,9 +26,8 @@
     "start": "concurrently 'node ./backend' 'react-scripts start'",
     "build": "react-scripts build",
     "test:backend": "jest ./backend/*.spec.js",
-    "test:ui": "react-scripts test",
-    "test": "yarn test:backend && yarn test:ui",
-    "eject": "react-scripts eject",
+    "test:frontend": "react-scripts test",
+    "test": "yarn test:backend && yarn test:frontend --watchAll=false",
     "serve": "yarn build && node ./backend"
   },
   "eslintConfig": {

@@ -31,7 +31,7 @@ describe("AlertsCounter", () => {
 
   test("should show the correct count of alerts and the time of the last one", () => {
     render(<AlertsCounter {...alertsCounterMock} />);
-    expect(screen.getAllByText(/1/)).toBeDefined();
-    expect(screen.getAllByText(/17:50:08/)).toBeDefined();
+    expect(screen.getAllByText("4")).toBeDefined();
+    expect(screen.getAllByText(/:50:08/)).toBeDefined();
   });
 });
