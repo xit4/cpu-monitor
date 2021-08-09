@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import { MouseEventHandler, useState } from "react";
+import { Fragment, MouseEventHandler, useState } from "react";
 import { LOAD_THRESHOLD } from "../../constants";
 import { CpuLoadAvg } from "../../types";
 import { cn, toTimeString } from "../../utils";
@@ -7,7 +7,8 @@ import "./LineChart.css";
 
 const MARGIN = { top: 8, right: 24, bottom: 48, left: 24 },
   WIDTH = 800,
-  HEIGHT = 400;
+  HEIGHT = 400,
+  DOMAIN_HEIGHT_MULTIPLIER = 1.13;
 
 type LineChartProps = {
   data: CpuLoadAvg[];
@@ -25,7 +26,13 @@ export const LineChart = ({ data }: LineChartProps) => {
 
   const getY = d3
     .scaleLinear()
-    .domain([0, Math.max(yMaxValue + 0.4)])
+    .domain([
+      0,
+      Math.max(
+        LOAD_THRESHOLD * DOMAIN_HEIGHT_MULTIPLIER,
+        yMaxValue * DOMAIN_HEIGHT_MULTIPLIER
+      ),
+    ])
     .range([HEIGHT - MARGIN.top, 0]);
 
   const linePath = d3
@@ -111,9 +118,8 @@ export const LineChart = ({ data }: LineChartProps) => {
         ))}
         {data.map((item, idx) => (
           /* tooltips for each load point*/
-          <>
+          <Fragment key={`${item.timestamp}_tooltip`}>
             <text
-              key={`${item.timestamp}_load`}
               className={cn("LineChart-tooltip", {
                 "LineChart-tooltip-active": idx === activeIndex,
               })}
@@ -126,7 +132,6 @@ export const LineChart = ({ data }: LineChartProps) => {
             </text>
             {!!item.loadAvg && (
               <text
-                key={`${item.timestamp}_timestamp`}
                 className={cn("LineChart-tooltip-time", {
                   "LineChart-tooltip-active": idx === activeIndex,
                 })}
@@ -138,7 +143,7 @@ export const LineChart = ({ data }: LineChartProps) => {
                 {toTimeString(item.timestamp)}
               </text>
             )}
-          </>
+          </Fragment>
         ))}
       </svg>
     </div>
