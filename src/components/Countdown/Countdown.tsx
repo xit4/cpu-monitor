@@ -15,7 +15,7 @@ export const Countdown = ({ duration, currentLoad }: CountdownProps) => {
     setShowBar(false);
     setTimeout(() => setShowBar(true));
   }, [currentLoad]);
-
+  
   return (
     <div className="Countdown">
       {showBar && (

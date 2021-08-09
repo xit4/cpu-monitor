@@ -20,6 +20,7 @@ const cpuPolling = new CpuPolling();
 const alerts = new Alerts();
 
 export const CpuLoadMonitor = () => {
+  // history size is the number of load points we are plotting on the chart
   const historySize = LOAD_HISTORY_TIME_LIMIT / cpuPolling.refreshRate;
   const [loads, setLoads] = useState<CpuLoadAvg[]>(
     initializeHistory(historySize)
@@ -27,6 +28,7 @@ export const CpuLoadMonitor = () => {
   const [highLoadAlerts, setHighLoadAlerts] = useState<Alert[]>([]);
   const [lowLoadAlerts, setLowLoadAlerts] = useState<Alert[]>([]);
 
+  // the following useEffect virtually runs only on component mount
   useEffect(() => {
     const alertsUnsubscribe = alerts.subscribe((alert) => {
       if (alert.type === "High") {
@@ -38,6 +40,11 @@ export const CpuLoadMonitor = () => {
     const cpuPollingUnsubscribe = cpuPolling.subscribe((cpuLoadAvg) => {
       setLoads((prevLoads) => {
         let newLoads = [...prevLoads, cpuLoadAvg];
+        /* 
+          if adding a new load pushed the number of points over 
+          the history limit we drop the first (oldest) record
+          a limited size queue could replace the array
+        */
         if (newLoads.length > historySize) {
           newLoads = newLoads.slice(
             newLoads.length - historySize,
@@ -83,7 +90,7 @@ export const CpuLoadMonitor = () => {
           loadAlerts={lowLoadAlerts}
           label="Recovery alert(s)"
           imageSrc={good}
-          imageAlt="happy face over red, yellow, green speedometer pointing green"
+          imageAlt="happy face over red, yellow, green speedometer, pointing green"
         />
       </div>
       <LineChart data={loads} />

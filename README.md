@@ -1,7 +1,21 @@
 # About the project
 
-## TL;DR Available Scripts
+This is a browser-based CPU load monitoring application that displays 10 minutes of load history in the shape of a linechart. The application also alerts the user (and keeps track of the alert count) of prolonged (2 minutes) high loads and also recoveries from these states.
 
+## TL;DR How to setup and start the app
+
+To install the dependencies run **`yarn`** \
+and to run the app run **`yarn serve`** \
+The last command will serve both the FE and BE on port 4242\
+It is also possible to run the app in development mode by running `yarn start` but hot realoading will work only on the frontend code
+
+In order to simulate CPU load I used the following command multiple times until the CPU avg load reached the numbers I wanted.
+
+`yes > /dev/null &`
+
+do not forget to `killall yes` when you are done
+
+## Available Scripts
 In the project directory, you can run:
 
 ### `yarn serve`
@@ -43,6 +57,16 @@ Due to the limited size of the project, I decided to not take advantage of any s
 For the same reason, I did not use SCSS (or any equivalent solution) or styled-components to style my components. There were not many classes and most of them did not collide. This results in longer classnames and overall messier code but gave me a nostalgic kick back to when CSS preprocessors were not a thing. \
 I could have chosen many ways to show the load history, but I went with a line chart to force myself into using D3 that, again, I do not get the chance to use **directly** in my day to day.
 
+### Tech stack, libraries, tools and patterns
+- **create-react-app** to bootstrap the project
+- **React**
+- **Typescript**
+- **d3**, it was the first time using it hands on since I usually get to uset it through other charting libraries
+- **Express/NodeJS** for the simple backend and to serve the app
+- **git** to version code (private repo on Github)
+
+
+
 ## Future improvements
 
 _"Please write up a small explanation of how you would extend or improve your application design if you were building this for production."_
@@ -56,5 +80,5 @@ Feature wise I would definitely add some sort of "custom settings" functionality
 
 ## Known issues
 
-- I was lazy and assumed you would test this on a linux/macos machine so I did not check if the backend works on windows machine. If it does not, there probably is some polyfill for `os` that works
+- The backend will probably not work on a Windows machine (as mentioned in the assignment) but installin a polyfil would fix this issue (e.g. `loadavg-windows`)
 - Hibernation/sleep policies on laptops and especially phones, causing the browser tabs to lose CPU time when not focused, do not play well with polling and result in weird distances between points of the graph due to d3 handling the x-axis as a time axis. A more direct handling of the axis ticks might be required, or even a laxer history size limit.

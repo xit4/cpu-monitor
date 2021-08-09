@@ -66,6 +66,7 @@ export const LineChart = ({ data }: LineChartProps) => {
             <stop offset="100%" stopColor="#da3838" />
           </linearGradient>
         </defs>
+        {/* dashed line representing the threshold */}
         <line
           strokeDasharray="5, 10"
           x1={MARGIN.left}
@@ -74,6 +75,7 @@ export const LineChart = ({ data }: LineChartProps) => {
           y2={getY(LOAD_THRESHOLD)}
           stroke="#da3838"
         ></line>
+        {/* label for the threshold line */}
         <text
           className="LineChart-threshold-label"
           fill="currentColor"
@@ -82,6 +84,7 @@ export const LineChart = ({ data }: LineChartProps) => {
         >
           High average load threshold
         </text>
+        {/* the actual line connecting the load points plotted on the chart */}
         <path
           strokeWidth={3}
           fill="none"
@@ -95,6 +98,7 @@ export const LineChart = ({ data }: LineChartProps) => {
          * AKA text shows on top of circles when the curve is going up
          */}
         {data.map((item, idx) => (
+          /* dots representing loads on the chart */
           <circle
             key={item.timestamp}
             cx={getX(item.timestamp)}
@@ -106,24 +110,23 @@ export const LineChart = ({ data }: LineChartProps) => {
           />
         ))}
         {data.map((item, idx) => (
-          <text
-            key={item.timestamp}
-            className={cn("LineChart-tooltip", {
-              "LineChart-tooltip-active": idx === activeIndex,
-            })}
-            fill="currentColor"
-            x={getX(item.timestamp)}
-            y={getY(item.loadAvg) - 15}
-            textAnchor="middle"
-          >
-            {item.loadAvg.toFixed(2)}
-          </text>
-        ))}
-        {data.map(
-          (item, idx) =>
-            !!item.loadAvg && (
+          /* tooltips for each load point*/
+          <>
+            <text
+              key={`${item.timestamp}_load`}
+              className={cn("LineChart-tooltip", {
+                "LineChart-tooltip-active": idx === activeIndex,
+              })}
+              fill="currentColor"
+              x={getX(item.timestamp)}
+              y={getY(item.loadAvg) - 15}
+              textAnchor="middle"
+            >
+              {item.loadAvg.toFixed(2)}
+            </text>
+            {!!item.loadAvg && (
               <text
-                key={item.timestamp}
+                key={`${item.timestamp}_timestamp`}
                 className={cn("LineChart-tooltip-time", {
                   "LineChart-tooltip-active": idx === activeIndex,
                 })}
@@ -134,8 +137,9 @@ export const LineChart = ({ data }: LineChartProps) => {
               >
                 {toTimeString(item.timestamp)}
               </text>
-            )
-        )}
+            )}
+          </>
+        ))}
       </svg>
     </div>
   );

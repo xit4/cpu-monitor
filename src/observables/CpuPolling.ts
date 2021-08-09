@@ -34,8 +34,10 @@ export class CpuPolling implements Observable<CpuLoadAvg> {
 
     const cpuLoadAvg = await fetchCpuLoadAvg("/api/cpu");
     this.lastCpuLoadAvg = cpuLoadAvg;
+    // notify all subscribers
     this.observers.forEach((observer) => observer(cpuLoadAvg));
 
+    // start the next timer
     this.timeout = window.setTimeout(
       async () => await this.updateCpuLoadAvg(),
       this.pollingRate

@@ -20,11 +20,12 @@ export class Alerts implements Observable<Alert> {
     const cpuLoadAvgType: AlertType =
       cpuLoadAvg.loadAvg >= LOAD_THRESHOLD ? "High" : "Low";
     if (!this.lastAlert && cpuLoadAvgType === "High") {
-      // if we have not spawned an alert and we just crossed the threshold going up
+      // we have not spawned an alert and we just crossed the threshold going up
       this.replaceLastAlert(cpuLoadAvgType, cpuLoadAvg.timestamp);
     } else if (this.lastAlert && this.lastAlert.type !== cpuLoadAvgType) {
-      // if we are already tracking and the load type changed
+      // we are already tracking a trend but the load type changed
       if (cpuLoadAvgType === "Low" && !this.firstHighAlertDispathed) {
+        // simulating a dispatched alert in case we have a recovery without the high load having triggered an alert
         this.dispatched = true;
       } else {
         this.replaceLastAlert(cpuLoadAvgType, cpuLoadAvg.timestamp);
@@ -35,10 +36,11 @@ export class Alerts implements Observable<Alert> {
       this.lastAlert.type === cpuLoadAvgType &&
       !this.dispatched
     ) {
-      // if we are already tracking and the load type did not change
+      // we are already tracking a trend and the load type did not change
       const isOverTimeLimit =
         cpuLoadAvg.timestamp - this.lastAlert.timestamp >= this.timeLimit;
       if (isOverTimeLimit) {
+        // once we break the time limit we can notify all subscribers
         this.replaceLastAlert(cpuLoadAvgType, cpuLoadAvg.timestamp);
         this.dispatched = true;
         this.observers.forEach((observer) => observer(this.lastAlert!));
